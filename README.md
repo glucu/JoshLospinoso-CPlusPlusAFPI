@@ -8,3 +8,6 @@ I will state some facts:
 
 - I frame from using ```printf()``` but instead choose to use ```std::cout<<``` which is the prefer way to write to console output in C++.
 - **POD types** (Plain old data types) is what I won't prefer or use; however, I may make an exception for the exercises. If not I'll use **class**.
+# Feedback
+For anyone who is experienced in writing C++ code, I will gladly accept feedback in what can be done better! :)
+
