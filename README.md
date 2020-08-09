@@ -1,4 +1,4 @@
-# Exercises-From-C-A-Fast-Paced-Introduction-by-Josh-Lospinoso
+# Exercises-From-CPP-A-Fast-Paced-Introduction-by-Josh-Lospinoso
 # Why?
 My journey in learning C++ started back in 2018. Fast forward to one year later towards the end of 2019, I decided to brush up on the basics again and learn modern practices in C++. I stumbled upon this book and came to realization that there are no online sources that gives solutions to these exercises found at the end of each chapter. Why does it matter? For me, Beginners who want to learn programming for the first time, especially a language like C++, won't gain much just by reading the chapters and doing the exercises without knowing if they wrote the code well. It would be nice to supply them with solutions for them to compare their work against others and see if their approach is at least sufficient compared to the solution. 
 # My Credibility
