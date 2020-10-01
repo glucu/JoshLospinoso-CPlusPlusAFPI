@@ -1,6 +1,7 @@
 #include <iostream>
 
-/* Create a method on Calculator called int calculate(int a, int b).
+/* 
+   Create a method on Calculator called int calculate(int a, int b).
    Upon invocation, this method should perform addition, subtraction, multiplication, or division based on its constructor argument and return the result.
    Experiment with different means of initializing Calculator instances.
 */
@@ -20,8 +21,8 @@ struct Calculator
         std::cout << "This should not be called.\n";
     }
 
-    Calculator(const Operation operation)
-       : operation{operation} {}
+    Calculator(Operation operation)
+       : operation{operation} { }
 
     int calculate(int a, int b)
     {
@@ -29,31 +30,28 @@ struct Calculator
         {
             case Operation::ADD: {
                 return a + b;
-                break;
             }
 
             case Operation::SUBTRACT: {
                 return a - b;
-                break;
             }
 
             case Operation::MULTIPLY: {
                 return a * b;
-                break;
             }
 
             case Operation::DIVIDE: {
                 return a / b;
-                break;
             }
 
             default: {
-                std::cout << "Not a operation I know.\n";
+                std::cout << "Not an operator I know of.\n";
                 break;
             }
         }
     }
 
+private:
     Operation operation;
 };
 
