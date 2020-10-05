@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstddef>
+#include <iterator>
 
-/* Implement an all function with the following prototype:
+/*
+   Implement an all function with the following prototype:
 
    template <typename Fn, typename In, typename Out>
    constexpr bool all(Fn function, In* input, size_t length);
@@ -12,13 +14,13 @@
 */
 
 template <typename Fn, typename In>
-constexpr bool all(Fn function, In* input, std::size_t length);
+constexpr bool all(Fn function, In* input, size_t length);
 
 int main()
 {
 	int data[]{ 100, 200, 300, 400, 500 };
 	//std::size_t data_len = 5;
-	std::size_t data_len{ std::size(data) };
+	auto data_len{ std::ssize(data) };
 
 	auto all_gt100 = all([](auto x) { return x > 100; }, data, data_len);
 
@@ -31,10 +33,10 @@ int main()
 }
 
 template <typename Fn, typename In>
-constexpr bool all(Fn function, In* input, std::size_t length)
+constexpr bool all(Fn function, In* input, size_t length)
 {
 	bool flag{};
-	for (std::size_t i{}; i < length; ++i)
+	for (size_t i{}; i < length; ++i)
 	{
 		if (function(input[i]))
 			flag = true;
