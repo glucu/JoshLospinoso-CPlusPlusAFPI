@@ -20,11 +20,11 @@ public:
 	}
 
 	void count_length(const char* x) const;
-	void print() const;
+	friend std::ostream& operator<<(std::ostream& out, const CharacterLength& a);
 
 private:
 	int* counts{};
-	int length{};
+	int  length{};
 
 };
 
@@ -36,7 +36,7 @@ void CharacterLength::count_length(const char* x) const
 
 	static int i{ };
 
-	char c{};
+	char c{ };
 	c = x[0];
 	while (c != '\0')
 	{
@@ -50,14 +50,13 @@ void CharacterLength::count_length(const char* x) const
 	this->counts[i++] = length_count;
 }
 
-void CharacterLength::print() const
+std::ostream& operator<<(std::ostream& out, const CharacterLength& a)
 {
-	for (int i{}; i < length; ++i)
-	{
-		std::cout << "Length: " << counts[i] << '\n';
-	}
-}
+	for (int i{}; i < a.length; ++i)
+		out << "Length: " << a.counts[i] << '\n';
 
+	return out;
+}
 
 int main(int argc, char** argv)
 {
@@ -68,7 +67,7 @@ int main(int argc, char** argv)
 		a.count_length(argv[i]);
 	}
 
-	a.print();
+	std::cout << a;
 
 	return 0;
 }
