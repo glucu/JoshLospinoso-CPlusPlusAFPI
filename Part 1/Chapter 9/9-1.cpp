@@ -1,21 +1,24 @@
 #include <iostream>
 #include <utility>
+#include <cstddef>
+#include <iterator>
 
-/* Implement a fold function template with the following prototype 
+/*
+   Implement a fold function template with the following prototype
    template <typename Fn, typename In, typename Out>
    constexpr Out fold(Fn function, In* input, size_t length, Out initial);
 
-  The value of sum should be 1,500. Use fold to calculate the following quantities:
-  the maximum, the minimum, and the number of elements greater than 200
+   The value of sum should be 1,500. Use fold to calculate the following quantities:
+   the maximum, the minimum, and the number of elements greater than 200
 */
 
 template <typename Fn, typename In, typename Out>
-constexpr Out fold(Fn function, In* input, std::size_t length, Out initial);
+constexpr Out fold(Fn function, In* input, size_t length, Out initial);
 
 int main()
 {
 	int data[]{ 100, 200, 300, 400, 500 };
-	std::size_t data_len = 5;
+	auto data_len = std::ssize(data);  // <-- Since C++20 the signed size (ssize) can aid.
 
 	// calculate sum
 	auto d_sum = [](auto x, auto y) { return x + y; };
@@ -44,7 +47,7 @@ int main()
 template <typename Fn, typename In, typename Out>
 constexpr Out fold(Fn function, In* input, std::size_t length, Out initial)
 {
-	for (std::size_t index{}; index < length; ++index)
+	for (size_t index{}; index < length; ++index)
 	{
 		initial = function(std::move(initial), input[index]);
 	}
