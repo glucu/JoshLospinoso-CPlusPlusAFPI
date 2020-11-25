@@ -1,10 +1,11 @@
 #include <iostream>
 
 /* 
-   Create a method on Calculator called int calculate(int a, int b).
-   Upon invocation, this method should perform addition, subtraction, multiplication, or division based on its constructor argument and return the result.
-   Experiment with different means of initializing Calculator instances.
-*/
+ *  Create a method on Calculator called int calculate(int a, int b).
+ *  Upon invocation, this method should perform addition, subtraction, multiplication, 
+ *  or division based on its constructor argument and return the result.
+ *  Experiment with different means of initializing Calculator instances.
+ */
 
 enum class Operation
 {
@@ -14,46 +15,53 @@ enum class Operation
     DIVIDE
 };
 
-struct Calculator
+class Calculator
 {
+public:
     Calculator()
     {
         std::cout << "This should not be called.\n";
     }
 
-    Calculator(Operation operation)
-       : operation{operation} { }
+    Calculator(Operation operation);
+    int calculate(int a, int b);
 
-    int calculate(int a, int b)
-    {
-        switch(operation)
-        {
-            case Operation::ADD: {
-                return a + b;
-            }
-
-            case Operation::SUBTRACT: {
-                return a - b;
-            }
-
-            case Operation::MULTIPLY: {
-                return a * b;
-            }
-
-            case Operation::DIVIDE: {
-                return a / b;
-            }
-
-            default: {
-                std::cout << "Not an operator I know of.\n";
-                break;
-            }
-        }
-    }
+    Operation get_operation()
+    { return m_operation; }
 
 private:
-    Operation operation;
+    Operation m_operation;
 };
+
+Calculator::Calculator(Operation operation)
+    : m_operation{operation} { }
+
+int Calculator::calculate(int a, int b)
+{
+    switch(get_operation())
+    {
+        case Operation::ADD: {
+            return a + b;
+        }
+
+        case Operation::SUBTRACT: {
+            return a - b;
+        }
+
+        case Operation::MULTIPLY: {
+            return a * b;
+        }
+
+        case Operation::DIVIDE: {
+            return a / b;
+        }
+
+        default: {
+            std::cout << "Not an operator I know of.\n";
+            break;
+        }
+    }
+}
 
 int main()
 {
