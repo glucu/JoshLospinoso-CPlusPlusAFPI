@@ -5,7 +5,7 @@
 int main()
 {
     auto original = 100;
-    auto& original_ref = original;
+    auto &original_ref = original;
 
     printf("Original: %d\n", original);
     printf("Reference: %d\n", original_ref);
