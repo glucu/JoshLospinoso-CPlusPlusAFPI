@@ -1,9 +1,9 @@
 #include <iostream>
 #include <chrono>
 
-/* Implement a copy constructor and a copy assignment operator for
-   TimerClass. The copies should share timestamp values.
-*/
+/*  Implement a copy constructor and a copy assignment operator for
+ *  TimerClass. The copies should share timestamp values.
+ */
 
 struct TimerClass
 {
@@ -13,17 +13,10 @@ struct TimerClass
 
     ~TimerClass()
     {
-        std::chrono::steady_clock::time_point current;
-        current = std::chrono::steady_clock::now();
-
-        std::chrono::steady_clock::duration end_time;
-        end_time = current - m_timestamp;
-
-        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time).count();
-        std::cout << '\n';
+        auto current = std::chrono::steady_clock::now() -  m_timestamp;
+        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
+        std::cout << " microseconds\n";
     }
-
-    // Copy semantics
 
     // Copy constructor
     TimerClass(const TimerClass& rhs)
@@ -41,6 +34,5 @@ struct TimerClass
         return *this;
     }
 
-private:
     std::chrono::steady_clock::time_point m_timestamp;
 };

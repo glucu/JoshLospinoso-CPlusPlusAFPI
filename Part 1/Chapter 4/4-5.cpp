@@ -8,23 +8,16 @@
 
 struct TimerClass
 {
-    TimerClass(char* name)
+    TimerClass(const char* name)
         : m_timestamp{ std::chrono::steady_clock::now() },
-        m_name{ name } {}
+          m_name{ name } {}
 
     ~TimerClass()
     {
-        std::chrono::steady_clock::time_point current;
-        current = std::chrono::steady_clock::now();
-
-        std::chrono::steady_clock::duration end_time;
-        end_time = current - m_timestamp;
-
-        std::cout << m_name << ": " << std::chrono::duration_cast<std::chrono::microseconds>(end_time).count();
-        std::cout << '\n';
+        auto current = std::chrono::steady_clock::now() -  m_timestamp;
+        std::cout << m_name << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
+        std::cout << " microseconds\n";
     }
-
-    // Copy semantics
 
     // Copy constructor
     TimerClass(const TimerClass& rhs)
@@ -43,12 +36,10 @@ struct TimerClass
         return *this;
     }
 
-    // Move semantics
-
     // Move constructor
     TimerClass(TimerClass&& rhs) noexcept
         : m_timestamp{ rhs.m_timestamp },
-        m_name{ rhs.m_name } {}
+          m_name{ rhs.m_name } {}
 
     // Move assignment
     TimerClass& operator=(TimerClass&& rhs) noexcept
@@ -62,8 +53,7 @@ struct TimerClass
         return *this;
     }
 
-private:
     std::chrono::steady_clock::time_point m_timestamp;
-    char* m_name;
+    const char* m_name;
 
 };

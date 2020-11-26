@@ -1,9 +1,9 @@
 #include <iostream>
 #include <chrono>
 
-/* In the destructor of TimerClass, record the current timeand subtract the
-   time at construction.This time is roughly the age of the timer.Print this value
-*/
+/*  In the destructor of TimerClass, record the current timeand subtract the
+ *  time at construction.This time is roughly the age of the timer.Print this value
+ */
 
 
 struct TimerClass
@@ -14,16 +14,10 @@ struct TimerClass
 
     ~TimerClass()
     {
-        std::chrono::steady_clock::time_point current;
-        current = std::chrono::steady_clock::now();
-
-        std::chrono::steady_clock::duration end_time;
-        end_time = current - m_timestamp;
-
-        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time).count();
-        std::cout << '\n';
+        auto current = std::chrono::steady_clock::now() -  m_timestamp;
+        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
+        std::cout << " microseconds\n";
     }
 
-private:
     std::chrono::steady_clock::time_point m_timestamp;
 };
