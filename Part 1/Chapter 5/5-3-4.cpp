@@ -1,10 +1,10 @@
 #include <iostream>
 
-/* Add an AccountDatabase reference member to Bank. Use constructor injection to add an InMemoryAccountDatabase to the Bank.
-   Modify ConsoleLogger to accept a const char* at construction. When
-   ConsoleLogger logs, prepend this string to the logging output. 
-   Notice that you can modify logging behavior without having to modify Bank
-*/
+/*  Add an AccountDatabase reference member to Bank. Use constructor injection to add an InMemoryAccountDatabase to the Bank.
+ *  Modify ConsoleLogger to accept a const char* at construction. When
+ *  ConsoleLogger logs, prepend this string to the logging output. 
+ *  Notice that you can modify logging behavior without having to modify Bank
+ */
 
 struct Logger
 {
