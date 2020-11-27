@@ -4,125 +4,142 @@
 #include <utility>
 
 /*  Identify each method in the SimpleString class (Listing 4-38).  
-    Try reimplementing it from scratch without referring to the book.
-*/
+ *  Try reimplementing it from scratch without referring to the book.
+ */
 
 // Note: I used a class instead of a struct.
 
 class SimpleString
 {
 public:
-    // 1-arg constructor
-    SimpleString(size_t max_size)
-            : max_size{ max_size },
-              length{}
-    {
-        if (max_size == 0)
-        {
-            throw std::runtime_error{ "Max size must be at least 1." };
-        }
+    explicit SimpleString(size_t max_size);                 // one-argument constructor
+    ~SimpleString();                                        // Destructor
 
-        buffer = new char[max_size];
-        buffer[0] = 0;
-    }
+    SimpleString(const SimpleString &rhs);                  // Copy constructor
+    SimpleString& operator=(const SimpleString &rhs);       // Copy assignment operator 
 
-    // Destructor
-    ~SimpleString()
-    {
-        delete[] buffer;
-    }
-
-    // Copy constructor
-    SimpleString(const SimpleString &other)
-       : max_size{ other.max_size },
-         buffer{ new char[other.max_size] },
-         length{ other.length }
-    {
-        std::strncpy(buffer, other.buffer, max_size);
-    }
-
-    // Move constructor
-    SimpleString(SimpleString &&other) noexcept
-       : max_size{ other.max_size },
-         buffer{ other.buffer },
-         length{ other.length }
-    {
-        other.length = 0;
-        other.buffer = nullptr;
-        other.max_size = 0;
-    }
-
-    // Copy assignment operator
-    SimpleString& operator=(const SimpleString &other)
-    {
-        if (this == &other)
-            return *this;
-
-        const auto new_buffer = new char[other.max_size];
-        delete[] buffer;
-        buffer = new_buffer;
-        length = other.length;
-        max_size = other.max_size;
-        std::strncpy(buffer, other.buffer, max_size);
-
-        return *this;
-    }
-
-    // Move assignment operator
-    SimpleString& operator=(SimpleString &&other) noexcept
-    {
-        if (this == &other)
-            return *this;
-
-        delete[] buffer;
-        buffer = other.buffer;
-        length = other.length;
-        max_size = other.max_size;
-        other.buffer = nullptr;
-        other.length = 0;
-        other.max_size = 0;
-
-        return *this;
-    }
+    SimpleString(SimpleString &&rhs) noexcept;              // Move constructor
+    SimpleString& operator=(SimpleString &&rhs) noexcept;   // Move assignment constructor
 
     void print(const char* tag) const
-    {
-        std::cout << tag << ": " << buffer << '\n';
-    }
+    { std::cout << tag << ": " << m_buffer << '\n'; }       // Print tag followed by C-Style array 
 
-    bool append_line(const char *x)
-    {
-        const auto x_len = strlen(x);
-
-        if (x_len + length + 2 > max_size)
-            return false;
-
-        std::strncpy(buffer + length, x, max_size - length);
-        length += x_len;
-        buffer[length++] = '\n';
-        buffer[length] = 0;
-
-        return true;
-    }
+    bool append_line(const char *x);                        // appends a new line to the buffer.
 
 private:
-    size_t max_size;
-    char* buffer;
-    size_t length;
+    size_t m_max_size;
+    char*  m_buffer;
+    size_t m_length;
 };
+
+SimpleString::SimpleString(size_t max_size)
+    : m_max_size{ max_size },
+      m_length{}
+{
+    if (max_size == 0)
+    {
+        throw std::runtime_error{ "Max size must be at least 1." };
+    }
+
+    m_buffer = new char[max_size];
+    m_buffer[0] = 0;
+}
+
+SimpleString::~SimpleString()
+{ delete[] m_buffer; }
+
+SimpleString::SimpleString(const SimpleString &rhs)
+    : m_max_size{ rhs.m_max_size },
+      m_buffer{ new char[rhs.m_max_size] },
+      m_length{ rhs.m_length }
+{
+    std::strncpy(m_buffer, rhs.m_buffer, m_max_size);
+}
+
+SimpleString& SimpleString::operator=(const SimpleString &rhs)
+{
+    if (this == &rhs) return *this;
+    
+    const auto new_buffer = new char[rhs.m_max_size];
+    delete[] m_buffer;
+    m_buffer = new_buffer;
+    m_length = rhs.m_length;
+    m_max_size = rhs.m_max_size;
+    
+    std::strncpy(m_buffer, rhs.m_buffer, m_max_size);
+    
+    return *this;
+}
+
+
+SimpleString::SimpleString(SimpleString &&rhs) noexcept
+    : m_max_size{ rhs.m_max_size },
+      m_buffer{ rhs.m_buffer },
+      m_length{ rhs.m_length }
+{
+    rhs.m_length = 0;
+    rhs.m_buffer = nullptr;
+    rhs.m_max_size = 0;
+}
+
+ SimpleString& SimpleString::operator=(SimpleString &&rhs) noexcept
+{
+    if (this == &rhs) return *this;
+    
+    delete[] m_buffer;
+    m_buffer = rhs.m_buffer;
+    m_length = rhs.m_length;
+    m_max_size = rhs.m_max_size;
+    
+    rhs.m_buffer = nullptr;
+    rhs.m_length = 0;
+    rhs.m_max_size = 0;
+    
+    return *this;
+}
+
+bool SimpleString::append_line(const char *x)
+{
+    const auto x_len = strlen(x);
+    
+    if (x_len + m_length + 2 > m_max_size) return false;
+    
+    std::strncpy(m_buffer + m_length, x, m_max_size - m_length);
+    m_length += x_len;
+    m_buffer[m_length++] = '\n';
+    m_buffer[m_length] = 0;
+    
+    return true;
+}
 
 int main()
 {
-    SimpleString a{ 50 };
-    a.append_line("C++ is the better programming language!");
+    try {
 
-    SimpleString b{ 50 };
-    b.append_line("No, Java is way better!");
+        SimpleString a{ 50 };
+        a.append_line("C++ is the better programming language!");
+        
+        SimpleString b{ 50 };
+        b.append_line("No, Java is way better!");
 
-    b= a; // <-- Lets change b's mind with copy assignment ;)
+        a.print("a ");
+        b.print("b ");
+        
+        b = a; // <-- Lets change b's mind with copy assignment ;)
+        
+        a.print("a ");
+        b.print("b ");
+    }
+    catch(const std::exception &e) {
 
-    a.print("a: ");
-    b.print("b: ");
+        std::cerr << "exception: " << e.what() << '\n';
+        return 1;
+    }
+    catch(...) {
+
+        std::cerr << "unknown exception caught\n";
+        return 2;
+    }
 
     return 0;
 }
