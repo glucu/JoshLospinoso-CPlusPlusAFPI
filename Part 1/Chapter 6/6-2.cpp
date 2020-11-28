@@ -7,11 +7,8 @@
 template <typename T>
 T mode(const T *values, std::size_t length)
 {
-	if (length <= 0)
-		return 0;
-
-	if (!values)
-		throw std::invalid_argument{ "Invalid argument passed." };
+	if (length <= 0) return 0;
+	if (!values)     throw std::invalid_argument{ "Invalid argument passed." };
 
 	T number{ values[0] };
 	T mode{ number };
@@ -45,19 +42,20 @@ int main()
 
 	std::sort(std::begin(values), std::end(values));
 
-	try
-	{
+	try {
 		auto result{ mode(values, length) };
 
 		// If exception is thrown, this won't execute.
 		std::cout << "mode: " << result << '\n';
 	}
-	catch (const std::invalid_argument &e)
-	{
-		std::cerr << "Standard exception: " << e.what() << '\n';
+	catch (const std::exception &e) {
+
+		std::cerr << "exception: " << e.what() << '\n';
+		return 1;
 	}
-	catch (...)
-	{
-		std::cerr << "Unknown Exception caught.\n";
+	catch (...) {
+		
+		std::cerr << "Unknown Exception caught\n";
+		return 2;
 	}
 }

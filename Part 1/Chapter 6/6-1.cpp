@@ -1,20 +1,17 @@
 #include <iostream>
 #include <stdexcept>
-#include <aglorithm>
+#include <algorithm>
 
-/* The mode of a series of values is the value that appears most commonly.
-   Implement a mode function using the following signature: int mode(const
-   int* values, size_t length). If you encounter an error condition, such as
-   input having multiple modes and no values, return zero.
-*/
+/*  The mode of a series of values is the value that appears most commonly.
+ *  Implement a mode function using the following signature: int mode(const
+ *  int* values, size_t length). If you encounter an error condition, such as
+ *  input having multiple modes and no values, return zero.
+ */
 
 int mode(const int *values, std::size_t length)
 {
-	if (length <= 0)
-		return 0;
-
-	if (!values)
-		throw std::invalid_argument{ "Invalid argument passed." };
+	if (length <= 0) return 0;
+	if (!values)     throw std::invalid_argument{ "Invalid argument passed." };
 
 	int number{ values[0] };
 	int mode{ number };
@@ -48,19 +45,21 @@ int main()
 
 	std::sort(std::begin(values), std::end(values));
 
-	try
-	{
-		auto result{ mode(values, length) };
+	try {
+
+		auto result = mode(values, length);
 
 		// If exception is thrown, this won't execute.
 		std::cout << "mode: " << result << '\n';
 	}
-	catch (const std::invalid_argument &e)
+	catch (const std::exception &e)
 	{
-		std::cerr << "Standard exception: " << e.what() << '\n';
+		std::cerr << "exception: " << e.what() << '\n';
+		return 1;
 	}
 	catch (...)
 	{
-		std::cerr << "Unknown Exception caught.\n";
+		std::cerr << "Unknown Exception caught\n";
+		return 2;
 	}
 }
