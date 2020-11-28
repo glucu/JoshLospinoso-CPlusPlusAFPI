@@ -1,8 +1,8 @@
 #include <cstdio>
 
-/* Refactor mean in Listing 6-13 to accept an array rather than pointer and
-   length arguments. Use Listing 6-33 as a guide.
-*/
+/*  Refactor mean in Listing 6-13 to accept an array rather than pointer and
+ *  length arguments. Use Listing 6-33 as a guide. 
+ */
 
 
 template <size_t Index, typename T, size_t Length>
