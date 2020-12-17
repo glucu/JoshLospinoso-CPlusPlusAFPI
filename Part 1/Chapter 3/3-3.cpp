@@ -20,10 +20,10 @@
 class Link
 {
 public:
-    short operation_number;
+    short m_operation_number;
 
     Link(const short on);
-    Link* insert_after(Link* new_element);
+    void insert_after(Link* new_element);
     Link* insert_before(Link* new_element);
 
     void traverse_forward(Link* main_trooper) const;
@@ -41,14 +41,14 @@ private:
 };
 
 Link::Link(const short on)
-    : operation_number{on},
+    : m_operation_number{on},
       next{nullptr},
       prev{nullptr} { }
 
-Link* Link::insert_after(Link* new_element)
+void Link::insert_after(Link* new_element)
 {
-    if (!new_element)  return this;
-    if (!this)         return new_element;
+    if (!new_element)  return;
+    if (!this)         return;
 
     new_element->prev = this;
     
@@ -58,7 +58,7 @@ Link* Link::insert_after(Link* new_element)
     new_element->next = this->next;
     this->next = new_element;
 
-    return new_element;
+    //return new_element;
 }
 
 Link* Link::insert_before(Link* new_element)
@@ -79,22 +79,23 @@ Link* Link::insert_before(Link* new_element)
 
 void Link::traverse_forward(Link* main_trooper) const
 {
-    if(main_trooper) 
-    {
+    if(!main_trooper) return;
+
         const Link* curr{main_trooper};
         std::cout << "{ ";
         while(curr) 
         {
-            std::cout << curr->operation_number;
+            std::cout << curr->m_operation_number;
             if(curr = curr->get_next())
                 std::cout << " <=> ";
         }
         std::cout << " }\n";
-    }
 }
 
 void Link::traverse_backwards(Link *main_trooper) const
 {
+    if(!main_trooper) return;
+
     const Link* tail{main_trooper};
 
     while(tail->get_next())
@@ -103,7 +104,7 @@ void Link::traverse_backwards(Link *main_trooper) const
     std::cout << "{ ";
     while(tail)
     {
-        std::cout << tail->operation_number;
+        std::cout << tail->m_operation_number;
         if(tail = tail->get_prev())
             std::cout << " <=> ";
     }
@@ -114,15 +115,14 @@ int main()
 {
 
     Link *main_trooper{new Link{2187}};
+    
+    main_trooper = main_trooper->insert_before(new Link{421});
+    main_trooper = main_trooper->insert_before(new Link{500});
+    main_trooper = main_trooper->insert_before(new Link{16});
+    main_trooper = main_trooper->insert_before (new Link{348});
 
-    Link* trooper1{new Link{24}};
-    Link* trooper2{new Link{55}};
-    Link* trooper3{new Link{111}};
-    
-    main_trooper = main_trooper->insert_before(trooper1);
-    main_trooper = main_trooper->insert_before(trooper2);
-    main_trooper = main_trooper->insert_before(trooper3);
-    
+    main_trooper->insert_after (new Link{111});
+
     main_trooper->traverse_forward(main_trooper);
     main_trooper->traverse_backwards(main_trooper);
 
