@@ -1,34 +1,34 @@
 #include <iostream>
 #include <chrono>
 
-/* Elaborate the TimerClass constructor to accept an additional const char*
-   name parameter.When TimerClass is destructedand prints to stdout, include
-   the name of the timer in the output
-*/
+/*  Elaborate the TimerClass constructor to accept an additional const char*
+ *  name parameter. When TimerClass is destructed and prints to stdout, include
+ *  the name of the timer in the output
+ */
 
-struct TimerClass
-{
-    TimerClass(const char* name)
+class TimerClass {
+
+public:
+    TimerClass(const char *name)
         : m_timestamp{ std::chrono::steady_clock::now() },
-          m_name{ name } {}
+          m_name{ name } { }
 
-    ~TimerClass()
-    {
-        auto current = std::chrono::steady_clock::now() -  m_timestamp;
+    ~TimerClass() {
+
+        auto current = std::chrono::steady_clock::now() - m_timestamp;
         std::cout << m_name << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
         std::cout << " microseconds\n";
     }
 
     // Copy constructor
-    TimerClass(const TimerClass& rhs)
+    TimerClass(const TimerClass &rhs) noexcept
         : m_timestamp{ rhs.m_timestamp },
-        m_name{ rhs.m_name } { }
+          m_name{ rhs.m_name } { }
 
     // Copy assignment
-    TimerClass& operator=(const TimerClass& rhs)
-    {
-        if (this == &rhs)
-            return *this;
+    TimerClass& operator=(const TimerClass &rhs) noexcept {
+
+        if (this == &rhs) return *this;
 
         m_timestamp = rhs.m_timestamp;
         m_name = rhs.m_name;
@@ -37,15 +37,14 @@ struct TimerClass
     }
 
     // Move constructor
-    TimerClass(TimerClass&& rhs) noexcept
+    TimerClass(TimerClass &&rhs) noexcept
         : m_timestamp{ rhs.m_timestamp },
-          m_name{ rhs.m_name } {}
+          m_name{ rhs.m_name } { }
 
     // Move assignment
-    TimerClass& operator=(TimerClass&& rhs) noexcept
-    {
-        if (this == &rhs)
-            return *this;
+    TimerClass& operator=(TimerClass &&rhs) noexcept {
+
+        if (this == &rhs) return *this;
 
         m_timestamp = rhs.m_timestamp;
         m_name = rhs.m_name;
@@ -53,7 +52,7 @@ struct TimerClass
         return *this;
     }
 
+private:
     std::chrono::steady_clock::time_point m_timestamp;
-    const char* m_name;
-
+    const char *m_name{};
 };

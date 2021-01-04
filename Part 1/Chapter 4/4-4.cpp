@@ -2,33 +2,33 @@
 #include <chrono>
 
 /*  Implement a move constructor and a move assignment operator for
- *  TimerClass. A moved-from TimerClass shouldn�t print any output to the console
+ *  TimerClass. A moved-from TimerClass shouldn't print any output to the console
  *  when it gets destructed.
  */
 
-struct TimerClass
-{
+class TimerClass {
+
+public:
     TimerClass()
         : m_timestamp{ std::chrono::steady_clock::now() }
     { }
 
-    ~TimerClass()
-    {
-        auto current = std::chrono::steady_clock::now() -  m_timestamp;
-        std::cout << m_name << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
+    ~TimerClass() {
+
+        auto current = std::chrono::steady_clock::now() - m_timestamp;
+        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
         std::cout << " microseconds\n";
     }
 
     // Copy constructor
-    TimerClass(const TimerClass& rhs)
+    TimerClass(const TimerClass &rhs) noexcept
         : m_timestamp{ rhs.m_timestamp }
     { }
 
     // Copy assignment
-    TimerClass& operator=(const TimerClass& rhs)
-    {
-        if (this == &rhs)
-            return *this;
+    TimerClass& operator=(const TimerClass &rhs) noexcept {
+
+        if (this == &rhs) return *this;
 
         m_timestamp = rhs.m_timestamp;
 
@@ -36,21 +36,19 @@ struct TimerClass
     }
 
     // Move constructor
-    TimerClass(TimerClass&& rhs) noexcept
+    TimerClass(TimerClass &&rhs) noexcept
         : m_timestamp{ rhs.m_timestamp }
-   { }
 
     // Move assignment
-    TimerClass& operator=(TimerClass&& rhs) noexcept
-    {
-        if (this == &rhs)
-            return *this;
+    TimerClass& operator=(TimerClass &&rhs) noexcept {
+
+        if (this == &rhs) return *this;
 
         m_timestamp = rhs.m_timestamp;
 
         return *this;
     }
     
+private:
     std::chrono::steady_clock::time_point m_timestamp;
-
 };

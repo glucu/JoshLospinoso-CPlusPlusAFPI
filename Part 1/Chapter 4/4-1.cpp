@@ -4,8 +4,9 @@
  *  field called timestamp (compare with the POSIX function gettimeofday).
  */
 
-struct TimerClass
-{
+class TimerClass {
+    
+public:
     TimerClass()
         : m_timestamp{ std::chrono::steady_clock::now() }
     { }

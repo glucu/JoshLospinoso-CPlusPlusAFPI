@@ -13,31 +13,31 @@
  *   I decided to just use an example using fibonacci sequences. Of course, it would 
  *   be considered appropriate to test for int overflow considering we have discussed error
  *   handling. In addition, main() deals with invalid states that std::cin can cause, so of course,
- *   I check for that as well.
+ *   I check for that using stream states.
  */
 
+class TimerClass {
 
-struct TimerClass
-{
-    TimerClass(const char* name)
+public:
+    TimerClass(const char *name)
         : m_timestamp{ std::chrono::steady_clock::now() },
-          m_name{ name } {}
+          m_name{ name } { }
 
-    ~TimerClass()
-    {
-        auto current = std::chrono::steady_clock::now() -  m_timestamp;
+    ~TimerClass() {
+
+        auto current = std::chrono::steady_clock::now() - m_timestamp;
         std::cout << m_name << std::chrono::duration_cast<std::chrono::microseconds>(current).count();
         std::cout << " microseconds\n";
     }
 
     // Copy constructor
-    TimerClass(const TimerClass& rhs)
+    TimerClass(const TimerClass &rhs) noexcept
         : m_timestamp{ rhs.m_timestamp },
           m_name{ rhs.m_name } { }
 
     // Copy assignment
-    TimerClass& operator=(const TimerClass& rhs)
-    {
+    TimerClass& operator=(const TimerClass &rhs) noexcept {
+
         if (this == &rhs) return *this;
 
         m_timestamp = rhs.m_timestamp;
@@ -47,13 +47,13 @@ struct TimerClass
     }
 
     // Move constructor
-    TimerClass(TimerClass&& rhs) noexcept
+    TimerClass(TimerClass &&rhs) noexcept
         : m_timestamp{ rhs.m_timestamp },
           m_name{ rhs.m_name } { }
 
     // Move assignment
-    TimerClass& operator=(TimerClass&& rhs) noexcept
-    {
+    TimerClass& operator=(TimerClass &&rhs) noexcept {
+
         if (this == &rhs) return *this;
 
         m_timestamp = rhs.m_timestamp;
@@ -62,20 +62,20 @@ struct TimerClass
         return *this;
     }
 
+private:
     std::chrono::steady_clock::time_point m_timestamp;
-    const char* m_name;
-
+    const char *m_name;
 };
 
 
-void fibonacci(int fib1, int fib2, int n, TimerClass &&timer)
+void fibonacci(long long fib1, long long fib2, long long n, TimerClass &&timer)
 {
-    if(n < 2) throw std:: runtime_error{"n must be at least 2."};
+    if(n < 2) throw std::runtime_error{"n must be at least 2."};
 
     std::cout << fib1 << ", " << fib2 << ", ";
-    for(int i{2}; i < n; ++i) {
+    for(auto i{fib2}; i < n; ++i) {
 
-        int temp{fib1+fib2};
+        long long temp{fib1+fib2};
 
         if(temp < 0) throw std::runtime_error{"int overflow!"};
 
@@ -88,8 +88,8 @@ void fibonacci(int fib1, int fib2, int n, TimerClass &&timer)
     std::cout << "\n\n";
 }
 
-int main()
-{
+int main() {
+
     try {
         
         std::cout << "How many fibonacci numbers do you want to see computed?\n";
@@ -98,7 +98,7 @@ int main()
          while(true) {
 
             std::cout << "> "; 
-            int n{};
+            long long n{};
             std::cin >> n;
 
             if(std::cin) {
@@ -106,7 +106,7 @@ int main()
                 if(n == -1) break;
 
                 std::cout << "fibonacci(" << n << "): ";
-                fibonacci(1, 2, n, TimerClass{"Time: "}); std::cout << "\n\n";
+                fibonacci(1LL, 2LL, n, TimerClass{"Time: "}); std::cout << "\n\n";
             }
             else if(std::cin.fail()) {
 
