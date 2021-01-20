@@ -4,19 +4,19 @@
 #include <iterator>
 
 /*
-   Implement a fold function template with the following prototype
-   template <typename Fn, typename In, typename Out>
-   constexpr Out fold(Fn function, In* input, size_t length, Out initial);
-
-   The value of sum should be 1,500. Use fold to calculate the following quantities:
-   the maximum, the minimum, and the number of elements greater than 200
-*/
+ *  Implement a fold function template with the following prototype
+ *  template <typename Fn, typename In, typename Out>
+ *  constexpr Out fold(Fn function, In* input, size_t length, Out initial);
+ *
+ *  The value of sum should be 1,500. Use fold to calculate the following quantities:
+ *  the maximum, the minimum, and the number of elements greater than 200
+ */
 
 template <typename Fn, typename In, typename Out>
 constexpr Out fold(Fn function, In* input, size_t length, Out initial);
 
-int main()
-{
+int main() {
+
 	int data[]{ 100, 200, 300, 400, 500 };
 	auto data_len = std::ssize(data);  // <-- Since C++20 the signed size (ssize) can aid.
 
@@ -45,10 +45,10 @@ int main()
 }
 
 template <typename Fn, typename In, typename Out>
-constexpr Out fold(Fn function, In* input, std::size_t length, Out initial)
-{
-	for (size_t index{}; index < length; ++index)
-	{
+constexpr Out fold(Fn function, In* input, std::size_t length, Out initial) {
+
+	for (size_t index{}; index < length; ++index) {
+		
 		initial = function(std::move(initial), input[index]);
 	}
 
