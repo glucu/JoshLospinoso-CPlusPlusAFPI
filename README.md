@@ -12,6 +12,9 @@ I will state some facts:
 
 3. I may or may not use concepts that were not introduced in a following chapter, but I will leave a comment explaining what it means. For example: In chapter 2 exercise, I used the keyword `const` when passing an  `enum class` object to reframe the idea that it is not intended to be modified but rather be passed as read-only.
 
+## Part 2
+ ***Note***: On a Linux machine, I placed the **catch.hpp** file in the default searach path of **g++**: */usr/include/c++/11* 
+
 # Feedback
 For anyone who is experienced in writing C++ code (or anyone who will like to give tips/advice about this repo), I will gladly accept feedback in what can be done better! :)
 
