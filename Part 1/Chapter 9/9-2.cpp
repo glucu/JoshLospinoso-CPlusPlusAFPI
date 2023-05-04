@@ -1,72 +1,69 @@
 #include <iostream>
+#include <cstddef>
+#include <ostream>
 
 /*  Implement a program that accepts an arbitrary number of command line
  *  arguments, m_counts the m_length in characters of each argument, and prints a
  *  histogram of the argument m_length distribution.
  */
 
-class Characterm_length {
+class Histogram {
 public:
-	Characterm_length(int max)
-		: m_counts{ new int[max] },
-		  m_length{ max }
-	{ }
+    explicit Histogram(std::size_t len)
+        : m_data{ new std::size_t[len]{} },
+          m_size{},
+          m_length{ len },
+          m_tally{} { }
 
-	~Characterm_length() {
+    ~Histogram() {
+        delete[] m_data;
+    }
 
-		if (m_counts)
-			delete[] m_counts;
-	}
+    Histogram(const Histogram&) = delete;
+    Histogram& operator=(const Histogram&) = delete;
 
-	void count_m_length(const char* x) const;
-	friend std::ostream& operator<<(std::ostream& out, const Characterm_length& a);
+    void ingest(const char* text) {
+        std::size_t index{};
+        while (text[index]) {
+            ++m_tally;
+            ++index;
+        }
+        m_data[m_size++] = m_tally;
+        m_tally = 0;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Histogram& hist) {
+        for (std::size_t i{}; i != hist.get_length(); ++i) {
+            out << "Argument #" << (i + 1) << ": " << hist.m_data[i] << '\n';
+        }
+        return out;
+    }
+
+    std::size_t get_length() const { return m_length; }
+
 
 private:
-	int* m_counts{};
-	int  m_length{};
-
+    std::size_t* m_data;
+    std::size_t m_size;
+    std::size_t m_length;
+    std::size_t m_tally;
 };
 
-void Characterm_length::count_m_length(const char* x) const {
-
-	int index{ };
-
-	int m_length_count{ };
-
-	static int i{ };
-
-	char c{ };
-	c = x[0];
-	while (c != '\0') {
-
-		m_length_count++;
-
-		index++;
-
-		c = x[index];
-	}
-
-	this->m_counts[i++] = m_length_count;
-}
-
-std::ostream& operator<<(std::ostream& out, const Characterm_length& a) {
-
-	for (int i{}; i < a.m_length; ++i)
-		out << "m_length: " << a.m_counts[i] << '\n';
-
-	return out;
-}
 
 int main(int argc, char** argv) {
 
-	Characterm_length a{ argc - 2 };
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " [arguments...]\n";
+        return 1;
+    }
 
-	for (int i{ 2 }; i < argc; ++i){
-		
-		a.count_m_length(argv[i]);
-	}
+    Histogram hist{ argc };
 
-	std::cout << a;
+    for (std::size_t i{ 1 }; i < hist.get_length(); ++i) {
+        hist.ingest(argv[i]);
+    }
 
-	return 0;
+    std::cout << hist << '\n';
+
+    return 0;
 }
