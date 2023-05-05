@@ -10,33 +10,31 @@
  */
 
 struct Hal {
-    Hal(std::shared_ptr<FILE> file);
-    ~Hal();
-    
-    void write_status();
+public:
+	explicit Hal(std::shared_ptr<std::FILE> file)
+		: m_file{ file } { }
 
-    std::shared_ptr<FILE> file;
+	~Hal() {
+		fprintf(m_file.get(), "Stop, Dave.\n");
+	}
+
+	void write_status() {
+		fprintf(m_file.get(), "I'm completely operational.\n");
+	}
+
+private:
+	const std::shared_ptr<std::FILE> m_file;
 };
-
-Hal::Hal(std::shared_ptr<FILE> file)
-    : file{file} { }
-
-Hal::~Hal() {
-    fprintf(file.get(), "Stop, Dave.\n");
-}
-
-void Hal::write_status() {
-    fprintf(file.get(), "I'm completely operational.\n");
-}
 
 
 int main() {
-    
-    auto file_ptr{ std::shared_ptr<FILE>(std::fopen("output.txt", "w"), std::fclose) };
-    Hal hal1{file_ptr}, hal2{file_ptr}, hal3{file_ptr};
-    hal1.write_status();
-    hal2.write_status();
-    hal3.write_status();
 
-    return 0;
+	auto file = std::shared_ptr<std::FILE>(std::fopen("HAL9000", "w"), std::fclose);
+	Hal hal1{ file }, hal2{ file }, hal3{ file };
+
+	hal1.write_status();
+	hal2.write_status();
+	hal3.write_status();
+
+	return 0;
 }
